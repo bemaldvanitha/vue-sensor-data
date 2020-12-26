@@ -9,19 +9,30 @@
 </template>
 
 <script>
-
+  import axios from "axios";
 export default {
   name: "LoginForm",
   data(){
     return {
       email: '',
       password: '',
+      error: '',
     }
   },
   methods: {
     handleSubmit(){
-      console.log(this.email);
-      console.log(this.password);
+      axios.post('http://localhost:5000/signin',{
+        'email': this.email,
+        'password': this.password
+      }).then(res => {
+
+        this.$router.push('/charts');
+
+      }).catch(err => {
+
+        console.log(err);
+
+      })
     }
   },
 }

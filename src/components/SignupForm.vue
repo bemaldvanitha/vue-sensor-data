@@ -10,24 +10,35 @@
 </template>
 
 <script>
+  import axios from "axios";
+  export default {
+    name: "SignupForm",
+    data(){
+      return {
+        name: '',
+        email: '',
+        password: '',
+        error: ''
+      }
+    },
+    methods: {
+      handleSubmit(){
+        axios.post('http://localhost:5000/signup',{
+          'name': this.name,
+          'email': this.email,
+          'password': this.password,
+        }).then(res => {
 
-export default {
-  name: "SignupForm",
-  data(){
-    return {
-      name: '',
-      email: '',
-      password: '',
-    }
-  },
-  methods: {
-    handleSubmit(){
-      console.log(this.name);
-      console.log(this.email);
-      console.log(this.password);
-    }
-  },
-}
+          this.$router.push('/charts');
+
+        }).catch(err => {
+
+          console.log(err);
+
+        })
+      }
+    },
+  }
 </script>
 
 <style scoped>
