@@ -34,7 +34,7 @@ export default {
     };
   },
   created()  {
-    axios.get(`http://localhost:5000/sensorData`).then(response => {
+    axios.get(`http://localhost:5000/temperature/data`).then(response => {
       const data = response.data;
 
       data.forEach(singleData => {
