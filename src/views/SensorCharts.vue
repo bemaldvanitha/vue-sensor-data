@@ -10,6 +10,9 @@
             <option  v-for="sensor in sensorIdList" :value="sensor">{{ sensor }}</option>
         </select>
 
+        <br/>
+        <DateRangePicker @setDate="changeDate"/>
+
         <line-chart :chartData="changeGraphDataAccordingSelect" :options="chartOptions" :label="chatTitle"></line-chart>
       </div>
 
@@ -23,10 +26,13 @@ import axios from 'axios';
 import moment from 'moment';
 import LineChart from '../components/LineChart'
 
+import DateRangePicker from "@/components/DateRangePicker";
+
 export default {
   name: 'SensorCharts',
   components: {
-    LineChart
+    LineChart,
+    DateRangePicker
   },
   data(){
     return {
@@ -39,6 +45,12 @@ export default {
       sensorId: '',
       sensorIdList: [],
     };
+  },
+  methods: {
+    changeDate(dates){
+      console.log(dates.startDate);
+      console.log(dates.endDate);
+    }
   },
   computed: {
     changeGraphDataAccordingSelect(){
