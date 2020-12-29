@@ -22,11 +22,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-import moment from 'moment';
-import LineChart from '../components/LineChart'
+  import axios from 'axios';
+  import moment from 'moment';
+  import LineChart from '../components/LineChart'
 
-import DateRangePicker from "@/components/DateRangePicker";
+  import DateRangePicker from "@/components/DateRangePicker";
 
 export default {
   name: 'SensorCharts',
@@ -41,7 +41,7 @@ export default {
         maintainAspectRatio: false
       },
       sensorData: [],
-      chatTitle: 'Temperature * c',
+      chatTitle: '',
       sensorId: '',
       sensorIdList: [],
       renderChart: true
@@ -94,6 +94,8 @@ export default {
   created()  {
     axios.get(`http://localhost:5000/temperature/data`).then(response => {
       const data = response.data;
+
+      this.chatTitle = data[0].reading_type.toUpperCase();
 
       this.sensorIdList.push('all');
 
