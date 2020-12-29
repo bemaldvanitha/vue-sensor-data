@@ -13,7 +13,7 @@
         <br/>
         <DateRangePicker @setDate="changeDate"/>
 
-        <line-chart :chartData="changeGraphDataAccordingSelect" :options="chartOptions" :label="chatTitle"></line-chart>
+        <line-chart v-if="renderChart" :chartData="changeGraphDataAccordingSelect" :options="chartOptions" :label="chatTitle"></line-chart>
       </div>
 
     </div>
@@ -44,12 +44,40 @@ export default {
       chatTitle: 'Temperature * c',
       sensorId: '',
       sensorIdList: [],
+      renderChart: true
     };
   },
   methods: {
-    changeDate(dates){
-      console.log(dates.startDate);
-      console.log(dates.endDate);
+    async changeDate(dates){
+      this.renderChart = false;
+
+      const startDate = dates.startDate.toLocaleString();
+      const endDate = dates.endDate.toLocaleString();
+
+      const startDatePart = startDate.split(',')[0].split('/');
+      const endDatePart = endDate.split(',')[0].split('/');
+
+      const url = `http://localhost:5000/temperature/data?startDate=%3C${startDatePart[2]}-${startDatePart[0]}-${startDatePart[1]}%3E&endDate=%3C${endDatePart[2]}-${endDatePart[0]}-${endDatePart[1]}%3E`;
+
+      const response = await axios.get(url);
+      const resData = response.data;
+
+      this.sensorData = [];
+
+      resData.forEach(singleData => {
+        const date = moment(singleData.date,"YYYYMMDD").format("MM/DD");
+        const value = singleData.data_value;
+        const sensorId = singleData.sensor_id;
+
+        this.sensorData.push({
+          date: date,
+          value: value,
+          sensorId: sensorId
+        });
+
+      });
+      this.renderChart = true;
+      console.log(this.sensorData.length)
     }
   },
   computed: {

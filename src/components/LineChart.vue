@@ -16,13 +16,13 @@ export default {
   },
   mounted() {
 
-    const dates = this.chartData.map(singleData => singleData.date).reverse();
+    const dates = this.chartData.map(singleData => singleData.date);
     const totals = this.chartData.map(singleData => {
 
       const tempInFloat = singleData.value.toString();
       return parseFloat(tempInFloat.substring(0,tempInFloat.length - 1));
 
-    }).reverse();
+    });
 
     this.renderChart({
           labels: dates,
